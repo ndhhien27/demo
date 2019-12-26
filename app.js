@@ -32,8 +32,8 @@ mongoose.connect(process.env.MONGO_URI,
   }
 )
   .then(() =>
-    app.listen(8080, () =>
-      console.log(`Server ready at http://localhost:8080${server.graphqlPath}`)))
+    app.listen(1080, () =>
+      console.log(`Server ready at http://localhost:1080${server.graphqlPath}`)))
   .catch(err => console.log(err))
 
 // app.listen(5000, () => console.log('Server is listening'));
