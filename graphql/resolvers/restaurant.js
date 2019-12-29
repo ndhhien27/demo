@@ -63,9 +63,7 @@ export default {
       try {
         const restaurant = await Restaurant
           .findById(restaurantId)
-          .populate('menu_info.foods')
-
-        console.log(restaurant) 
+          .populate('menu_info.foods');
         return {
           ...restaurant._doc,
           _id: restaurant.id
