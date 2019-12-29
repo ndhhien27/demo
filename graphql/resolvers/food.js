@@ -47,7 +47,6 @@ export default {
       }
     },
     changeFoodAvailable: async (_, { isAvailable, foodId }) => {
-      console.log(isAvailable)
       try {
         await Food.findByIdAndUpdate(foodId, {$set:{is_available: isAvailable}})
         return foodId

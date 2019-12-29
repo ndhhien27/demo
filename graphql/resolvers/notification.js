@@ -12,11 +12,6 @@ export default {
         if (!user) throw new Error('User do not exist');
         const notifications = await Notification.find({ user: userId }).sort({ createdAt: -1 })
         return notifications.map(item => {
-          console.log({
-            ...item._doc,
-            _id: item._id,
-            createdAt: dateToString(item._doc.createdAt)
-          })
           return {
             ...item._doc,
             _id: item._id,

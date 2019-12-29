@@ -39,6 +39,7 @@ export default `
     createdRestaurants: [Restaurant!]
     countNotification: Int!
     isMerchant: Boolean!
+    phone: String!
   }
 
   type Mutation{

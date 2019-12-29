@@ -64,6 +64,9 @@ const userSchema = new Schema({
   isMerchant: {
     type: Boolean,
     default: false
+  },
+  phone: {
+    type: String
   }
 })
 

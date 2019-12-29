@@ -6,6 +6,7 @@ import Devices from '../../models/devices.model'
 import NotificationService from '../service/NotificationService'
 import Notification from '../../models/notification.model'
 import RestaurantDevice from '../../models/restaurantDevice.model'
+import ResNotificationService from '../service/ResNotificationService'
 
 export default {
   Query: {
@@ -82,9 +83,9 @@ export default {
         //Send notice
         const restaurant = await Restaurant.findById(orderInput.restaurant)
         const devices = await RestaurantDevice.find({ user: restaurant._doc.merchant, restaurant: orderInput.restaurant })
-        for (const divice of devices) {
-          let { token } = divice
-          NotificationService.sendMerchantNotification(
+        for (const device of devices) {
+          let { token } = device
+          ResNotificationService.sendMerchantNotification(
             {
               title: 'New order',
               message: 'Check you new order, A new order has come',
@@ -116,23 +117,22 @@ export default {
           { $set: { status } },
           { new: true })
         const restaurant = await Restaurant.findById(order.restaurant)
-        if (status !== 'canceled') {
+        if (status === 'confirmed' || status === 'rejected') { 
           const newNotification = new Notification({
             title: `Order has bean ${status}`,
-            order,
+            order: orderId,
             user: order.user,
             store: order.restaurant,
             message: `Your order ${orderId} from ${restaurant._doc.name} has been ${status}`
           })
           await newNotification.save()
           const devices = await Devices.find({ user: order.user })
-          for (const divice of devices) {
-            let { token } = divice
+          for (const device of devices) {
+            let { token } = device
             NotificationService.sendNotification(
               { ...newNotification._doc, orderId },
               token,
               res => {
-
               },
               err => {
                 throw err
@@ -140,14 +140,12 @@ export default {
             )
           }
         }
-        console.log(status)
         if (status === 'canceled') {
           const devices = await RestaurantDevice.find({ user: restaurant._doc.merchant, restaurant: restaurant._id })
           const buyer = await User.findById(order.user)
-          console.log(buyer._id)
           for (const device of devices) {
             let { token } = device
-            NotificationService.sendMerchantNotification(
+            ResNotificationService.sendMerchantNotification(
               {
                 title: 'Order has been canceled',
                 message: `Order ${orderId} has been canceled by ${buyer._id} !`,

@@ -46,6 +46,9 @@ const orderSchema = new Schema({
     type: Number,
     required: true
   },
+  user_phone: {
+    type: String,
+  }
 }, { timestamps: true })
 
 export default mongoose.model('Order', orderSchema)

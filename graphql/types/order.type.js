@@ -10,6 +10,7 @@ export default `
     createdAt: String!
     distance: Float!
     shipping_fee: Float!
+    user_phone: String!
   }
 
   type Item{

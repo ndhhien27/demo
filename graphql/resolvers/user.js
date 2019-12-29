@@ -60,9 +60,6 @@ export default {
       }
     },
     login: async (_, { email, password, fcmToken, deviceId, merchantApp }) => {
-      console.log(email)
-      console.log(password)
-      console.log(merchantApp)
       if(LoginValidation({email : email, password: password}).error) {
         let errMessage = LoginValidation({email : email, password: password}).error.message
         throw new Error(errMessage)
@@ -93,7 +90,8 @@ export default {
         tokenExpiration: 1,
         email: user.email,
         countNotification: user.countNotification,
-        isMerchant: user.isMerchant
+        isMerchant: user.isMerchant,
+        phone: user.phone
       }
     },
     addLocation: async (_, { location } ) => {
@@ -102,7 +100,6 @@ export default {
       if (location && location.address && location.lat && location.long) {
         user.location.forEach(element => {
           if(element.address === location.address) {
-            console.log('áđá')
             throw new Error("Addres already existed !");
           }
         });
